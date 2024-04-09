@@ -188,4 +188,48 @@ class BaseComplexTest {
         Complex complex1 = complex.copy();
         assertEquals(complex, complex1);
     }
+
+    @Test
+    void angle() {
+        Complex complex1 = new BaseComplex(1, 0);
+        Complex complex2 = new BaseComplex(0, 1);
+        double a = Complex.angle(complex1, complex2);
+        assertEquals(a, Math.PI / 2, 1e-15);
+
+        Complex complex3 = new BaseComplex(1, 1);
+        Complex complex4 = new BaseComplex(1, 0);
+        double a1 = Complex.angle(complex3, complex4);
+        assertEquals(a1, Math.PI / 4, 1e-15);
+
+        Complex complex5 = new BaseComplex(1, 1, 1, 1);
+        Complex complex6 = new BaseComplex(1, 1, 1, 1);
+        double a2 = Complex.angle(complex5, complex6);
+        assertEquals(a2, 0, 1e-15);
+
+        Complex complex7 = new BaseComplex(1, 1, 1, 1);
+        Complex complex8 = new BaseComplex(1, 1, 1, 0);
+        double a3 = Complex.angle(complex7, complex8);
+        assertEquals(a3, Math.PI / 6, 1e-15);
+
+        Complex complex9 = new BaseComplex(10,10);
+        Complex complex10 = new BaseComplex(-1,-1);
+        double a4 = Complex.angle(complex9, complex10);
+        assertEquals(a4, Math.PI, 1e-15);
+    }
+
+    @Test
+    void rotate() {
+        Complex complex = new BaseComplex(1, 0);
+        Complex complex1 = Complex.rotate(complex, Math.PI / 2);
+        assertTrue(complex1.equals(new BaseComplex(0, 1), 1e-15));
+
+        Complex complex2 = new BaseComplex(1, 0);
+        Complex complex3 = Complex.rotate(complex2, Math.PI / 4);
+        assertTrue(complex3.equals(new BaseComplex(1 / Math.sqrt(2), 1 / Math.sqrt(2)), 1e-15));
+
+        Complex complex4 = new BaseComplex(1, 1, 1, 1);
+        assertThrowsExactly(IllegalArgumentException.class, () -> Complex.rotate(complex4, Math.PI / 4));
+    }
+
+
 }

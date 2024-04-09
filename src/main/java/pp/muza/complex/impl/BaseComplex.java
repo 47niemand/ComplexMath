@@ -37,7 +37,7 @@ public class BaseComplex implements Complex {
     }
 
     /**
-     * Create a new complex number from other complex number
+     * Create a new complex number from another complex number
      *
      * @param complex the complex number
      */
@@ -226,6 +226,20 @@ public class BaseComplex implements Complex {
     }
 
     @Override
+    public void rotate(double angle) {
+        if (dimension != 2) {
+            throw new IllegalArgumentException("Rotation is only supported for 2D complex numbers");
+        }
+        onChange();
+        double cos = Math.cos(angle);
+        double sin = Math.sin(angle);
+        double x = value[0] * cos - value[1] * sin;
+        double y = value[0] * sin + value[1] * cos;
+        value[0] = x;
+        value[1] = y;
+    }
+
+    @Override
     public double squareModule() {
         double res = 0.0;
         if (Double.isNaN(_squareModule)) {
@@ -259,28 +273,6 @@ public class BaseComplex implements Complex {
         checkIndex(index);
         if (index >= dimension) {
             throw new IllegalArgumentException("Index must be less than dimension");
-        }
-    }
-
-    @Override
-    public void setIfGreater(int index, double value, double expected) {
-        checkIndex(index);
-        synchronized (this) {
-            if (value > expected) {
-                onChange();
-                this.value[index] = value;
-            }
-        }
-    }
-
-    @Override
-    public void setIfLess(int index, double value, double expected) {
-        checkIndex(index);
-        synchronized (this) {
-            if (value < expected) {
-                onChange();
-                this.value[index] = value;
-            }
         }
     }
 

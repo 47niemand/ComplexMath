@@ -12,6 +12,7 @@ import java.beans.Transient;
  * Most methods change the state of the object.
  * Use static methods for mathematical operations that return a new object.
  */
+@SuppressWarnings("unused")
 public interface Complex {
 
     /**
@@ -34,7 +35,6 @@ public interface Complex {
      * The zero vector
      */
     Complex ZERO = Complex.immutableOf(0.0, 0.0);
-
 
     /**
      * The X dimension index
@@ -311,6 +311,20 @@ public interface Complex {
     }
 
     /**
+     * Rotate the complex number by the angle
+     *
+     * @param complex the complex number (only for 2D)
+     * @param angle   the angle in radians
+     * @return a new complex number
+     * @throws IllegalArgumentException if the dimension is not 2
+     */
+    static Complex rotate(Complex complex, double angle) {
+        Complex res = complex.copy();
+        res.rotate(angle);
+        return res;
+    }
+
+    /**
      * Distance between two complex numbers
      *
      * @param A the first complex number
@@ -464,6 +478,13 @@ public interface Complex {
     void scale(double scale);
 
     /**
+     * Rotate the vector by the angle, only for two dimensions complex
+     *
+     * @param angle the angle in radians
+     */
+    void rotate(double angle);
+
+    /**
      * Return the square module of the value
      * S = X*X + Y*Y + Z*Z ...
      *
@@ -487,24 +508,6 @@ public interface Complex {
      * @param value value
      */
     void setValue(int index, double value);
-
-    /**
-     * Set the value of the dimension index if the value is greater than the expected value
-     *
-     * @param index    dimension index
-     * @param value    value
-     * @param expected expected value
-     */
-    void setIfGreater(int index, double value, double expected);
-
-    /**
-     * Set the value of the dimension index if the value is less than the expected value
-     *
-     * @param index    dimension index
-     * @param value    value
-     * @param expected expected value
-     */
-    void setIfLess(int index, double value, double expected);
 
     /**
      * Return values as array

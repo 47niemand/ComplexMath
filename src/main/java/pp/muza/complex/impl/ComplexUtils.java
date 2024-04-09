@@ -7,7 +7,6 @@ import pp.muza.complex.Complex;
  **/
 public final class ComplexUtils {
 
-
     /**
      * Create a new complex number
      *
@@ -59,6 +58,27 @@ public final class ComplexUtils {
      */
     public static Complex immutableOf(double... values) {
         return new BaseComplex(values) {
+            private boolean _protected = false;
+
+            @Override
+            protected void onChange() {
+                if (_protected) {
+                    throw new UnsupportedOperationException("Immutable complex");
+                }
+                _protected = true;
+                super.onChange();
+            }
+        };
+    }
+
+    /**
+     * Create a new immutable complex number from an existing complex number
+     *
+     * @param complex the complex v
+     * @return a new immutable complex number
+     */
+    public static Complex immutableOf(Complex complex) {
+        return new BaseComplex(complex) {
             private boolean _protected = false;
 
             @Override

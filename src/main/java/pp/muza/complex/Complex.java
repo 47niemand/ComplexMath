@@ -172,7 +172,7 @@ public interface Complex {
      * @return a new complex number
      */
     static Complex immutableOf(Complex value) {
-        return ComplexUtils.immutableOf(value.get());
+        return ComplexUtils.immutableOf(value);
     }
 
     /**
